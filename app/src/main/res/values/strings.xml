@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Login Page</string>
+    <string name="title_activity_main">CBA1 Login Page</string>
+    <string name="title_activity_login">Login</string>
+    <string name="pref_filename">Login Page</string>
+    <string name="action_logout">Logout</string>
+    <string name="pref_key_remember_me">remember_me</string>
+</resources>
