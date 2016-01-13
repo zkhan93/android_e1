@@ -12,47 +12,69 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.github.zkhan93.contactpage.adapter.ContactAdapter;
+import io.github.zkhan93.contactpage.model.Contact;
+import io.github.zkhan93.contactpage.util.Constants;
+import io.github.zkhan93.contactpage.util.Util;
 
 public class ContactActivity extends AppCompatActivity {
     private boolean back_pressed = false;
     private RecyclerView contactList;
     private ContactAdapter contactAdapter;
-    private Response.Listener<JSONObject> loginResponseListener;
-    private Response.ErrorListener loginErrorlistErrorListener;
+    private Response.Listener<JSONObject> contactResponseListener;
+    private Response.ErrorListener contactErrorlistErrorListener;
     public static String TAG = "ContactActivity";
 
     public ContactActivity() {
-        loginResponseListener = new Response.Listener<JSONObject>() {
+        contactResponseListener = new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "response:" + response);
                 try {
-                    if (response.optBoolean("Authentication")) {
+                    if (response.optBoolean(Constants.JSON_KEYS.AUTHENTICATION)) {
                         //login success
-
+                        List<Contact> contacts=new ArrayList<>();
+                        JSONArray jcontacts=response.optJSONArray(Constants.JSON_KEYS.CONTACTS);
+                        int len=jcontacts.length();
+                        JSONObject jcontact;
+                        Contact contact;
+                        for(int i=0;i<len;i++){
+                            jcontact=jcontacts.getJSONObject(i);
+                            contact=new Contact();
+                            contact.setId(jcontact.optLong(Constants.JSON_KEYS.Contacts.ID));
+                            contact.setName(jcontact.optString(Constants.JSON_KEYS.Contacts.NAME));
+                            contact.setNumber(jcontact.optString(Constants.JSON_KEYS.Contacts.NUMBER));
+                            contacts.add(contact);
+                        }
+                        contactAdapter.addAll(contacts);
                     } else {
                         //login failed
-
+                        Log.d(TAG,"not authenticated");
                     }
                 } catch (Exception ex) {
-
                     Log.d(TAG, "error:" + ex.getLocalizedMessage());
                 }
             }
         };
-        loginErrorlistErrorListener = new Response.ErrorListener() {
+        contactErrorlistErrorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "error:" + error.getLocalizedMessage());
-
             }
         };
     }
@@ -95,6 +117,12 @@ public class ContactActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getContacts();
+    }
+
     /**
      * clear the data stored(remember me state) and start the login activity
      */
@@ -118,7 +146,15 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void getContacts() {
-
+        JSONObject responseBody=new JSONObject();
+        try {
+            responseBody.put(Constants.JSON_KEYS.USERNAME, Util.getUsername(getApplicationContext()));
+            responseBody.put(Constants.JSON_KEYS.PASSWORD, Util.getPassword(getApplicationContext()));
+        }catch(JSONException jex){
+            Log.d(TAG,""+jex.getLocalizedMessage());
+        }
+        Request request =new JsonObjectRequest(Request.Method.POST, Constants.URL.GET_CONTACTS,responseBody,contactResponseListener,contactErrorlistErrorListener);
+        getReqQueue().add(request);
     }
 
     private RequestQueue getReqQueue() {

@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (response.optBoolean("Authentication")) {
                         //login success
-                        saveRememberMeState();
+                        saveUserData();
                         startMainActivity();
                     } else {
                         //login failed
@@ -111,10 +111,13 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * save remember me state in SharedPreferences for next time
      */
-    private void saveRememberMeState() {
+    private void saveUserData() {
         if (rememberMeView != null) {
             SharedPreferences spf = getSharedPreferences(getString(R.string.pref_filename), Context.MODE_PRIVATE);
-            spf.edit().putBoolean(getString(R.string.pref_key_remember_me), rememberMeView.isChecked()).apply();
+            spf.edit().putBoolean(getString(R.string.pref_key_remember_me), rememberMeView.isChecked())
+                    .putString("username",usernameView.getText().toString())
+                    .putString("password",passwordView.getText().toString())
+                    .apply();
         }
     }
 
