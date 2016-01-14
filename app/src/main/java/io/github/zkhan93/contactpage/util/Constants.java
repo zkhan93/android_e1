@@ -6,9 +6,10 @@ package io.github.zkhan93.contactpage.util;
 public interface Constants {
     interface URL{
         int PORT=8080;
-        String BASE="http://192.168.1.105:"+PORT+"/CBA1LoginPage/";
-        String LOGIN=BASE;
-        String GET_CONTACTS=BASE+"/getcontacts";
+        String HOST="192.168.2.11";
+        String BASE="http://"+HOST+":"+PORT+"/CBA2ContactPage/";
+        String LOGIN=BASE+"login";
+        String GET_CONTACTS=BASE+"getcontacts";
     }
     interface PREF_KEYS{
         String USERNAME="username";
@@ -18,7 +19,7 @@ public interface Constants {
         String USERNAME="username";
         String PASSWORD="password";
         String AUTHENTICATION="authentication";
-        String CONTACTS="Contacts";
+        String CONTACTS="contacts";
         interface Contacts{
             String ID="id";
             String NAME="name";

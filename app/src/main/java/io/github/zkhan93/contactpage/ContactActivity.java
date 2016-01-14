@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,7 +19,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -36,6 +37,7 @@ public class ContactActivity extends AppCompatActivity {
     private boolean back_pressed = false;
     private RecyclerView contactList;
     private ContactAdapter contactAdapter;
+    private ProgressBar progressBar;
     private Response.Listener<JSONObject> contactResponseListener;
     private Response.ErrorListener contactErrorlistErrorListener;
     public static String TAG = "ContactActivity";
@@ -48,26 +50,33 @@ public class ContactActivity extends AppCompatActivity {
                 try {
                     if (response.optBoolean(Constants.JSON_KEYS.AUTHENTICATION)) {
                         //login success
-                        List<Contact> contacts=new ArrayList<>();
-                        JSONArray jcontacts=response.optJSONArray(Constants.JSON_KEYS.CONTACTS);
-                        int len=jcontacts.length();
+                        List<Contact> contacts = new ArrayList<>();
+                        JSONArray jcontacts = response.optJSONArray(Constants.JSON_KEYS.CONTACTS);
+                        if (jcontacts == null) {
+                            return;
+                        }
+                        int len = jcontacts.length();
                         JSONObject jcontact;
                         Contact contact;
-                        for(int i=0;i<len;i++){
-                            jcontact=jcontacts.getJSONObject(i);
-                            contact=new Contact();
+                        for (int i = 0; i < len; i++) {
+                            jcontact = jcontacts.getJSONObject(i);
+                            contact = new Contact();
                             contact.setId(jcontact.optLong(Constants.JSON_KEYS.Contacts.ID));
                             contact.setName(jcontact.optString(Constants.JSON_KEYS.Contacts.NAME));
                             contact.setNumber(jcontact.optString(Constants.JSON_KEYS.Contacts.NUMBER));
                             contacts.add(contact);
                         }
                         contactAdapter.addAll(contacts);
+                        contactAdapter.notifyDataSetChanged();
+
                     } else {
                         //login failed
-                        Log.d(TAG,"not authenticated");
+                        Log.d(TAG, "not authenticated");
                     }
                 } catch (Exception ex) {
                     Log.d(TAG, "error:" + ex.getLocalizedMessage());
+                }finally{
+                    showProgress(false);
                 }
             }
         };
@@ -75,6 +84,7 @@ public class ContactActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "error:" + error.getLocalizedMessage());
+                showProgress(false);
             }
         };
     }
@@ -85,6 +95,7 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         contactList = (RecyclerView) findViewById(R.id.contactList);
         contactList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         contactAdapter = new ContactAdapter(null);
@@ -118,8 +129,9 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+
         getContacts();
     }
 
@@ -146,14 +158,15 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void getContacts() {
-        JSONObject responseBody=new JSONObject();
+        showProgress(true);
+        JSONObject responseBody = new JSONObject();
         try {
             responseBody.put(Constants.JSON_KEYS.USERNAME, Util.getUsername(getApplicationContext()));
             responseBody.put(Constants.JSON_KEYS.PASSWORD, Util.getPassword(getApplicationContext()));
-        }catch(JSONException jex){
-            Log.d(TAG,""+jex.getLocalizedMessage());
+        } catch (JSONException jex) {
+            Log.d(TAG, "" + jex.getLocalizedMessage());
         }
-        Request request =new JsonObjectRequest(Request.Method.POST, Constants.URL.GET_CONTACTS,responseBody,contactResponseListener,contactErrorlistErrorListener);
+        Request request = new JsonObjectRequest(Request.Method.POST, Constants.URL.GET_CONTACTS, responseBody, contactResponseListener, contactErrorlistErrorListener);
         getReqQueue().add(request);
     }
 
@@ -161,5 +174,13 @@ public class ContactActivity extends AppCompatActivity {
         if (reqQueue == null)
             reqQueue = Volley.newRequestQueue(getApplicationContext());
         return reqQueue;
+    }
+
+    private void showProgress(boolean show) {
+        if (progressBar != null) {
+            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+            if (contactList != null)
+                contactList.setVisibility(show ? View.GONE : View.VISIBLE);
+        }
     }
 }
