@@ -2,6 +2,7 @@ package io.github.zkhan93.contactpage.server.service;
 
 import io.github.zkhan93.contactpage.server.dao.ContactDao;
 import io.github.zkhan93.contactpage.server.model.Contact;
+import io.github.zkhan93.contactpage.server.util.Constants;
 
 import java.util.List;
 
@@ -23,9 +24,12 @@ public class ContactService {
 			for (Contact contact : contacts) {
 				try {
 					jContact = new JSONObject();
-					jContact.put("id", contact.getId());
-					jContact.put("name", contact.getName());
-					jContact.put("number", contact.getNumber());
+					jContact.put(Constants.JSON_KEYS.Contacts.ID,
+							contact.getId());
+					jContact.put(Constants.JSON_KEYS.Contacts.NAME,
+							contact.getName());
+					jContact.put(Constants.JSON_KEYS.Contacts.NUMBER,
+							contact.getNumber());
 					jContacts.put(jContact);
 				} catch (JSONException ex) {
 					ex.printStackTrace();

@@ -27,6 +27,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ContactController</servlet-name>
-    <url-pattern>/getContact</url-pattern>
+    <url-pattern>/getcontacts</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -1,8 +1,10 @@
 package io.github.zkhan93.contactpage.server;
 
 import io.github.zkhan93.contactpage.server.service.LoginService;
+import io.github.zkhan93.contactpage.server.util.Constants;
 import io.github.zkhan93.contactpage.server.util.Util;
 
+import java.io.Console;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -40,8 +42,8 @@ public class LoginController extends HttpServlet {
 		response.setContentType("application/json");
 		JSONObject jResponse = new JSONObject();
 		try {
-			jResponse.put("Authentication", false);
-			jResponse.put("error", "Invalid Request");
+			jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, false);
+			jResponse.put(Constants.JSON_KEYS.ERROR, "Invalid Request");
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
@@ -66,20 +68,20 @@ public class LoginController extends HttpServlet {
 			if (jsonData != null) {
 				// reading username and password from JSONObject created earlier
 				String username, password;
-				username = jsonData.getString("username");
-				password = jsonData.getString("password");
+				username = jsonData.getString(Constants.JSON_KEYS.USERNAME);
+				password = jsonData.getString(Constants.JSON_KEYS.USERNAME);
 				// checking for correctness and response accordingly
 				boolean authenticated = new LoginService().checkUser(username,
 						password);
-				jResponse.put("Authentication", authenticated);
+				jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, authenticated);
 				if (authenticated) {
-					jResponse.put("msg", "Welcome");
+					jResponse.put(Constants.JSON_KEYS.MSG, "Welcome");
 				} else {
-					jResponse.put("error", "Invalid credentials");
+					jResponse.put(Constants.JSON_KEYS.ERROR, "Invalid credentials");
 				}
 			} else {
-				jResponse.put("Authentication", false);
-				jResponse.put("error", "No data received by server");
+				jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, false);
+				jResponse.put(Constants.JSON_KEYS.ERROR, "No data received by server");
 			}
 		} catch (JSONException ex) {
 			ex.printStackTrace();

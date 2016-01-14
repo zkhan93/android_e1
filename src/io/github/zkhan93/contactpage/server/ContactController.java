@@ -2,6 +2,7 @@ package io.github.zkhan93.contactpage.server;
 
 import io.github.zkhan93.contactpage.server.service.ContactService;
 import io.github.zkhan93.contactpage.server.service.LoginService;
+import io.github.zkhan93.contactpage.server.util.Constants;
 import io.github.zkhan93.contactpage.server.util.Util;
 
 import java.io.IOException;
@@ -40,8 +41,8 @@ public class ContactController extends HttpServlet {
 		response.setContentType("application/json");
 		JSONObject jResponse = new JSONObject();
 		try {
-			jResponse.put("Authentication", false);
-			jResponse.put("error", "Invalid Request");
+			jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, false);
+			jResponse.put(Constants.JSON_KEYS.ERROR, "Invalid Request");
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
@@ -60,17 +61,17 @@ public class ContactController extends HttpServlet {
 		try {
 			if(data!=null)
 				authentication = new LoginService().checkUser(
-					data.getString("username"), data.getString("password"));
+					data.getString(Constants.JSON_KEYS.PARAMS_KEYS.USERNAME), data.getString(Constants.JSON_KEYS.PARAMS_KEYS.PASSWORD));
 		} catch (JSONException ex) {
 			ex.printStackTrace();
 		}
 		JSONObject jResponse = new JSONObject();
 		try {
-			jResponse.put("Authentication", authentication);
+			jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, authentication);
 			if (authentication) {
-				jResponse.put("contacts", new ContactService().getContacts());
+				jResponse.put(Constants.JSON_KEYS.CONTACTS, new ContactService().getContacts());
 			} else {
-				jResponse.put("error", "Invalid credentials");
+				jResponse.put(Constants.JSON_KEYS.ERROR, "Invalid credentials");
 			}
 		} catch (JSONException ex) {
 			ex.printStackTrace();
