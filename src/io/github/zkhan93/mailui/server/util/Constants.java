@@ -17,5 +17,18 @@ public interface Constants {
         	String USERNAME="username";
         	String PASSWORD="password";
         }
+        interface Mail{
+        	String SUBJECT="subject";
+        	String BODY="body";
+        	String SENDER="sender";
+        	String RECEIVER="receiver";
+        	String TIME="time";
+        }
+        interface User{
+        	String USERNAME="username";
+        	String PASSWORD="password";
+        	String MAIL="mail";
+        	
+        }
     }
 }

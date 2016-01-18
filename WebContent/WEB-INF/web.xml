@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>MailController</display-name>
+    <servlet-name>MailController</servlet-name>
+    <servlet-class>io.github.zkhan93.mailui.server.MailController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MailController</servlet-name>
+    <url-pattern>/MailController</url-pattern>
+  </servlet-mapping>
 </web-app>

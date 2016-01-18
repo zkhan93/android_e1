@@ -2,7 +2,15 @@ package io.github.zkhan93.mailui.server.model;
 
 public class Mail {
 	private String subject,body;
-	private int sender,receiver;
+	private User sender,receiver;
+	private long time;
+	
+	public long getTime() {
+		return time;
+	}
+	public void setTime(long time) {
+		this.time = time;
+	}
 	public String getSubject() {
 		return subject;
 	}
@@ -15,17 +23,20 @@ public class Mail {
 	public void setBody(String body) {
 		this.body = body;
 	}
-	public int getSender() {
+	public User getSender() {
 		return sender;
 	}
-	public void setSender(int sender) {
+	public void setSender(User sender) {
 		this.sender = sender;
 	}
-	public int getReceiver() {
+	public User getReceiver() {
 		return receiver;
 	}
-	public void setReceiver(int receiver) {
+	public void setReceiver(User receiver) {
 		this.receiver = receiver;
+	}
+	private JSONObject getJSONSender(){
+		getSender().getJSON();
 	}
 	
 }

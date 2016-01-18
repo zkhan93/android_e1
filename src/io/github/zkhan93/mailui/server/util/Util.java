@@ -1,8 +1,12 @@
 package io.github.zkhan93.mailui.server.util;
 
+import io.github.zkhan93.mailui.server.model.Mail;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,5 +30,13 @@ public class Util {
 			result = null;
 		}
 		return result;
+	}
+	public static JSONArray getJSONMail(ArrayList<Mail> mails){
+		JSONArray jMails=new JSONArray();
+		JSONObject jMail;
+		for(Mail m:mails){
+			jMail=new JSONObject();
+			jMail.put(Constants.JSON_KEYS.MA, m.getJSONSender())
+		}
 	}
 }

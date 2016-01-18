@@ -1,5 +1,9 @@
 package io.github.zkhan93.mailui.server.model;
 
+import io.github.zkhan93.mailui.server.util.Constants;
+
+import org.json.JSONObject;
+
 public class User {
 	private int id;
 	private String username;
@@ -22,5 +26,8 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public JSONObject getJSON(){
+		JSONObject self=new JSONObject();
+		self.put(Constants.JSON_KEYS, .)
+	}
 }
