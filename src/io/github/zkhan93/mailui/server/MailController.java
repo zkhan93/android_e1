@@ -1,6 +1,7 @@
 package io.github.zkhan93.mailui.server;
 
 import io.github.zkhan93.mailui.server.service.LoginService;
+import io.github.zkhan93.mailui.server.service.MailService;
 import io.github.zkhan93.mailui.server.util.Constants;
 import io.github.zkhan93.mailui.server.util.Util;
 
@@ -57,10 +58,11 @@ public class MailController extends HttpServlet {
 		String username = jRequest.optString(Constants.JSON_KEYS.USERNAME);
 		String password = jRequest.optString(Constants.JSON_KEYS.PASSWORD);
 		JSONObject jResponse = new JSONObject();
+		
 		if (new LoginService().checkUser(username, password)) {
 			try {
 				jResponse.put(Constants.JSON_KEYS.AUTHENTICATION, true);
-				new 
+				jResponse.put(Constants.JSON_KEYS.MAILS,new MailService().getMails(username)); 
 			} catch (JSONException ex) {
 				ex.printStackTrace();
 			}
@@ -73,6 +75,10 @@ public class MailController extends HttpServlet {
 				ex.printStackTrace();
 			}
 		}
+		PrintWriter out=response.getWriter();
+		out.print(jResponse.toString());
+		out.flush();
+		System.out.println(jResponse);
 	}
 
 }

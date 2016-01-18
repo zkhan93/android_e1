@@ -31,12 +31,12 @@ public class Util {
 		}
 		return result;
 	}
-	public static JSONArray getJSONMail(ArrayList<Mail> mails){
-		JSONArray jMails=new JSONArray();
-		JSONObject jMail;
-		for(Mail m:mails){
-			jMail=new JSONObject();
-			jMail.put(Constants.JSON_KEYS.MA, m.getJSONSender())
+
+	public static JSONArray getJSONMail(ArrayList<Mail> mails) {
+		JSONArray jMails = new JSONArray();
+		for (Mail m : mails) {
+			jMails.put(m.getJSON());
 		}
+		return jMails;
 	}
 }
