@@ -4,5 +4,7 @@
     <string name="title_activity_login">Login</string>
     <string name="pref_filename">mail_ui_pref_file</string>
     <string name="action_logout">Logout</string>
+    <string name="action_settings">Setting</string>
+
     <string name="pref_key_remember_me">remember_me</string>
 </resources>

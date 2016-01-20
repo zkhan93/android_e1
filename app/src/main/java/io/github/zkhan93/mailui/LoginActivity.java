@@ -22,11 +22,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.github.zkhan93.loginpage.util.Constants;
+import io.github.zkhan93.mailui.util.Constants;
+import io.github.zkhan93.mailui.util.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText usernameView, passwordView;
+    private EditText usernameView, passwordView, emailView;
     private CheckBox rememberMeView;
     private TextView errorView;
     private RequestQueue reqQueue;
@@ -42,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (response.optBoolean("Authentication")) {
                         //login success
-                        saveRememberMeState();
+                        saveUserData();
                         startMainActivity();
                     } else {
                         //login failed
@@ -72,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         usernameView = (EditText) findViewById(R.id.username);
         passwordView = (EditText) findViewById(R.id.password);
         errorView = (TextView) findViewById(R.id.error_view);
+        emailView = (EditText) findViewById(R.id.email);
         rememberMeView = (CheckBox) findViewById(R.id.remember_me);
     }
 
@@ -97,24 +99,23 @@ public class LoginActivity extends AppCompatActivity {
         setError(null);
         String username = getUserName();
         String password = getPassword();
-        try {
-            JSONObject params = new JSONObject();
-            params.put("username", username);
-            params.put("password", password);
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.URL.LOGIN, params, loginResponseListener, loginErrorlistErrorListener);
-            getReqQueue().add(request);
-        } catch (JSONException ex) {
-            Log.d(TAG, "" + ex.getLocalizedMessage());
-        }
+        JSONObject params = Util.getCredentials(getApplicationContext());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.URL.LOGIN, params, loginResponseListener, loginErrorlistErrorListener);
+        getReqQueue().add(request);
+
     }
 
     /**
      * save remember me state in SharedPreferences for next time
      */
-    private void saveRememberMeState() {
+    private void saveUserData() {
         if (rememberMeView != null) {
             SharedPreferences spf = getSharedPreferences(getString(R.string.pref_filename), Context.MODE_PRIVATE);
-            spf.edit().putBoolean(getString(R.string.pref_key_remember_me), rememberMeView.isChecked()).apply();
+            spf.edit().putBoolean(getString(R.string.pref_key_remember_me), rememberMeView.isChecked())
+                    .putString("username", usernameView.getText().toString())
+                    .putString("email", emailView.getText().toString())
+                    .putString("password", passwordView.getText().toString())
+                    .apply();
         }
     }
 
