@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "error:" + error.getLocalizedMessage());
                 setError("Connection error, Try again!!");
+                //TODO:remove this line
+                saveUserData();
+                startMainActivity();
             }
         };
     }

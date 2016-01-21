@@ -84,7 +84,29 @@ public class Util {
         user.setId(-1);
         return user;
     }
-    public static String getPriority(int priority){
+
+    public static String getPriority(int priority) {
         return "HIGH";
+    }
+
+    public static List<Mail> getTestMails() {
+        List<Mail> mails = new ArrayList<Mail>();
+        User receiver = new User();
+        receiver.setUsername("zeeshan");
+        receiver.setEmail("zkhan1093@gmail.com");
+        Mail mail;
+        User sender;
+        for (int i = 0; i < 10; i++) {
+            sender = new User();
+            sender.setEmail("email" + i + "@mail.com");
+            sender.setUsername("sender" + i);
+            mail = new Mail();
+            mail.setReceiver(receiver);
+            mail.setSender(sender);
+            mail.setSubject("subject of mail " + i + " from sender" + i);
+            mail.setBody("body of mail " + i + " from sender" + i);
+            mails.add(mail);
+        }
+        return mails;
     }
 }

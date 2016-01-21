@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity {
         mailList = (RecyclerView) findViewById(R.id.mail_list);
         mailAdapter = new MailAdapter();
         mailList.setAdapter(mailAdapter);
-        getMails();
+        //getMails();
+        //TODO: remove this line
+        mailAdapter.addAll(Util.getTestMails());
     }
 
     @Override
