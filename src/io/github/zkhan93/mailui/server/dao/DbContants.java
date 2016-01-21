@@ -2,9 +2,9 @@ package io.github.zkhan93.mailui.server.dao;
 
 public interface DbContants {
 	String DB_USERNAME="root";
-	String DB_PASSWORD="1234";
+	String DB_PASSWORD="root";
 	String DB_HOST="localhost";
-	int DB_PORT=3306;
+	int DB_PORT=3311;
 	String DB_URL="jdbc:mysql://"+DB_HOST+":"+DB_PORT+"/";
 	String DB_NAME="cba3_mail_ui_db";
 	String DB_DRIVER="com.mysql.jdbc.Driver";
