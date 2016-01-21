@@ -47,11 +47,13 @@ public class Util {
 
     public static List<Mail> getMails(JSONArray jmails, User self) {
         List<Mail> mails = new ArrayList<Mail>();
+        List<User> ccs, bccs;
         int len = jmails.length();
         Mail mail;
-        User sender;
-        JSONObject jsender;
+        User sender, cc, bcc;
+        JSONObject jsender, jCcUser, jBccUser;
         JSONObject jmail;
+        JSONArray jCc, jBcc;
         for (int i = 0; i < len; i++) {
             mail = new Mail();
             try {
@@ -66,6 +68,34 @@ public class Util {
                 sender.setUsername(jsender.optString(Constants.JSON_KEYS.User.USERNAME));
                 mail.setSender(sender);
                 mail.setReceiver(self);
+                jCc = jmail.optJSONArray(Constants.JSON_KEYS.MAIL.CC);
+                ccs = new ArrayList<User>();
+                if (jCc != null) {
+                    int cclen = jCc.length();
+                    for (int j = 0; j < cclen; j++) {
+                        jCcUser = jCc.getJSONObject(j);
+                        cc = new User();
+                        cc.setId(jCcUser.optInt(Constants.JSON_KEYS.User.ID));
+                        cc.setEmail(jCcUser.optString(Constants.JSON_KEYS.User.EMAIL));
+                        cc.setUsername(jCcUser.optString(Constants.JSON_KEYS.User.USERNAME));
+                        ccs.add(cc);
+                    }
+                }
+                mail.setCc(ccs);
+                jBcc = jmail.optJSONArray(Constants.JSON_KEYS.MAIL.CC);
+                bccs = new ArrayList<User>();
+                if (jBcc != null) {
+                    int bcclen = jBcc.length();
+                    for (int j = 0; j < bcclen; j++) {
+                        jBccUser = jCc.getJSONObject(j);
+                        bcc = new User();
+                        bcc.setId(jBccUser.optInt(Constants.JSON_KEYS.User.ID));
+                        bcc.setEmail(jBccUser.optString(Constants.JSON_KEYS.User.EMAIL));
+                        bcc.setUsername(jBccUser.optString(Constants.JSON_KEYS.User.USERNAME));
+                        bccs.add(bcc);
+                    }
+                }
+                mail.setBcc(bccs);
                 mails.add(mail);
             } catch (JSONException ex) {
                 Util.log(TAG, ex.getLocalizedMessage());
@@ -81,5 +111,10 @@ public class Util {
         user.setUsername(spf.getString(Constants.PREF_KEYS.USERNAME, ""));
         user.setId(-1);
         return user;
+    }
+    public static getPriority(int priority){
+        switch(priority){
+            case Constants.
+        }
     }
 }

@@ -1,11 +1,13 @@
 package io.github.zkhan93.mailui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import io.github.zkhan93.mailui.adapter.MailAdapter;
 import io.github.zkhan93.mailui.model.Mail;
+import io.github.zkhan93.mailui.model.MailItemClickCallbackListener;
 import io.github.zkhan93.mailui.util.Constants;
 import io.github.zkhan93.mailui.util.Util;
 
@@ -31,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
     private MailAdapter mailAdapter;
     private RequestQueue reqQueue;
     private static String TAG = "MainActivity";
+    private MailItemClickCallbackListener callbackListener=new MailItemClickCallbackListener() {
+        @Override
+        public void onClick(Mail mail) {
+            Intent intent=new Intent(getApplicationContext(),MailActivity.class);
+            intent.putExtra("mail",mail);
+            startActivity(intent);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

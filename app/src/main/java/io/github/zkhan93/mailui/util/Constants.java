@@ -16,7 +16,7 @@ public interface Constants {
     interface PREF_KEYS {
         String USERNAME = "username";
         String PASSWORD = "password";
-        String EMAIL="email";
+        String EMAIL = "email";
     }
 
     interface JSON_KEYS {
@@ -38,12 +38,19 @@ public interface Constants {
             String ID = "id";
             String SUBJECT = "subject";
             String BODY = "body";
+            String CC = "cc";
+            String BCC = "bcc";
+            String PRIORITY = "priority";
         }
 
         interface User {
             String ID = "id";
             String EMAIL = "email";
             String USERNAME = "username";
+        }
+        interface Priority{
+            int HIGH=1;
+            int LOW=2;
         }
     }
 }

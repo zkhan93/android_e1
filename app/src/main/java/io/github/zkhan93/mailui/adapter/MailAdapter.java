@@ -1,5 +1,6 @@
 package io.github.zkhan93.mailui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,15 +44,22 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView subject, sender, time;
-
+        private Mail mail;
         ViewHolder(View parent) {
             super(parent);
             sender = (TextView) parent.findViewById(R.id.sender);
             subject = (TextView) parent.findViewById(R.id.subject);
             time = (TextView) parent.findViewById(R.id.time);
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getAdapterPosition();
+                }
+            });
         }
 
         public void setMail(Mail mail) {
+            this.mail=mail;
             if (subject != null)
                 subject.setText(mail.getSubject());
             if (sender != null && mail.getSender() != null)
