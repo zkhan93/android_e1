@@ -38,8 +38,7 @@ public interface Constants {
             String ID = "id";
             String SUBJECT = "subject";
             String BODY = "body";
-            String CC = "cc";
-            String BCC = "bcc";
+
             String PRIORITY = "priority";
         }
 

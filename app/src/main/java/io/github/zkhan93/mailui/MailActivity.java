@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import io.github.zkhan93.mailui.model.Mail;
 import io.github.zkhan93.mailui.model.User;
+import io.github.zkhan93.mailui.util.Util;
 
 public class MailActivity extends AppCompatActivity {
-    TextView sender, subject, cc, priority, body;
+    TextView sender, subject, priority, body;
     Mail mail;
 
     @Override
@@ -25,7 +26,6 @@ public class MailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sender = (TextView) findViewById(R.id.sender);
         subject = (TextView) findViewById(R.id.subject);
-        cc = (TextView) findViewById(R.id.cc);
         priority = (TextView) findViewById(R.id.priority);
         body = (TextView) findViewById(R.id.body);
     }
@@ -42,13 +42,14 @@ public class MailActivity extends AppCompatActivity {
 
     private void syncView() {
         if (mail != null) {
-            subject.setText(mail.getSubject());
-            sender.setText(mail.getSender().getEmail());
-            body.setText(mail.getBody());
-            for(User u:mail.getCc()) {
-                cc.setText(cc.getText()+", "+u.getEmail());
-            }
-            priority.setText(Util.getPriority(mail.getPriority()));
+            if (subject != null)
+                subject.setText(mail.getSubject());
+            if (sender != null)
+                sender.setText(mail.getSender().getEmail());
+            if (body != null)
+                body.setText(mail.getBody());
+            if (priority != null)
+                priority.setText(Util.getPriority(mail.getPriority()));
         }
     }
 }

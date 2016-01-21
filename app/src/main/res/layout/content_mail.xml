@@ -27,11 +27,7 @@
         android:layout_height="wrap_content"
         android:text="sender@mail.com" />
 
-    <TextView
-        android:id="@+id/cc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="cc:one@mail.com, two@mail.com" />
+
 
     <TextView
         android:id="@+id/priority"

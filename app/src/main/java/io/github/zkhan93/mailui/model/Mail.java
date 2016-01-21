@@ -6,39 +6,32 @@ import android.os.Parcelable;
 import java.util.List;
 
 /**
+ *
  * Created by 1036870 on 1/20/2016.
  */
 public class Mail implements Parcelable {
     private int id;
     private String subject, body;
-    private User sender, receiver;
+    private User sender,receiver;
     private long time;
-    private List<User> cc;
-    private List<User> bcc;
     private int priority;
+    public Mail(){
 
+    }
     public int getPriority() {
         return priority;
     }
 
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
     public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public List<User> getCc() {
-        return cc;
-    }
-
-    public void setCc(List<User> cc) {
-        this.cc = cc;
-    }
-
-    public List<User> getBcc() {
-        return bcc;
-    }
-
-    public void setBcc(List<User> bcc) {
-        this.bcc = bcc;
     }
 
     public int getId() {
@@ -73,13 +66,6 @@ public class Mail implements Parcelable {
         this.sender = sender;
     }
 
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
-    }
 
     public long getTime() {
         return time;
@@ -94,10 +80,9 @@ public class Mail implements Parcelable {
         subject = in.readString();
         body = in.readString();
         sender = in.readParcelable(User.class.getClassLoader());
-        receiver = in.readParcelable(User.class.getClassLoader());
+        receiver=in.readParcelable(User.class.getClassLoader());
         time = in.readLong();
-        in.readTypedList(cc, User.CREATOR);
-        in.readTypedList(bcc, User.CREATOR);
+
         priority = in.readInt();
     }
 
@@ -109,8 +94,7 @@ public class Mail implements Parcelable {
         parcel.writeParcelable(sender, i);
         parcel.writeParcelable(receiver, i);
         parcel.writeLong(time);
-        parcel.writeTypedList(cc);
-        parcel.writeTypedList(bcc);
+
         parcel.writeInt(priority);
 
     }

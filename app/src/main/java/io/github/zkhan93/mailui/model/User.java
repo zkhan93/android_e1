@@ -41,6 +41,10 @@ public class User implements Parcelable {
         parcel.writeString(email);
     }
 
+    public User() {
+
+    }
+
     public User(Parcel in) {
         id = in.readInt();
         username = in.readString();
