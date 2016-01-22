@@ -20,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.github.zkhan93.mailui.adapter.MailAdapter;
@@ -55,11 +56,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mailList = (RecyclerView) findViewById(R.id.mail_list);
-        mailAdapter = new MailAdapter();
+        mailAdapter = new MailAdapter(Util.getTestMails());
         mailList.setAdapter(mailAdapter);
         //getMails();
-        //TODO: remove this line
-        mailAdapter.addAll(Util.getTestMails());
     }
 
     @Override

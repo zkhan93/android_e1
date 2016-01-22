@@ -6,7 +6,7 @@ package io.github.zkhan93.mailui.util;
 public interface Constants {
     interface URL {
         int PORT = 8080;
-        String HOST = "10.0.2.2";
+        String HOST = "192.168.2.8";
         String BASE = "http://" + HOST + ":" + PORT + "/MailUI/";
         String LOGIN = BASE + "login";
         String GET_MAILS = BASE + "getMails";

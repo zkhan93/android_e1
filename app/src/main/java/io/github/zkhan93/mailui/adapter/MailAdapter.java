@@ -1,7 +1,7 @@
 package io.github.zkhan93.mailui.adapter;
 
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,19 +14,25 @@ import io.github.zkhan93.mailui.model.Mail;
 import io.github.zkhan93.mailui.util.Util;
 
 /**
- *
  * Created by 1036870 on 1/20/2016.
  */
 public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
 
     private List<Mail> mails;
 
-    public void addAll(List<Mail> mails){
-        if(this.mails==null)
-            this.mails=new ArrayList<Mail>();
+    public MailAdapter(List<Mail> mails) {
+        this.mails = mails;
+    }
+
+    public void addAll(List<Mail> mails) {
+        if (this.mails == null)
+            this.mails = new ArrayList<Mail>();
         this.mails.clear();
         this.mails.addAll(mails);
+        this.notifyDataSetChanged();
+
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.setMail(mails.get(position));
@@ -34,7 +40,7 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(parent);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.mail_item, parent));
     }
 
     @Override
@@ -45,6 +51,7 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView subject, sender, time;
         private Mail mail;
+
         ViewHolder(View parent) {
             super(parent);
             sender = (TextView) parent.findViewById(R.id.sender);
@@ -59,7 +66,7 @@ public class MailAdapter extends RecyclerView.Adapter<MailAdapter.ViewHolder> {
         }
 
         public void setMail(Mail mail) {
-            this.mail=mail;
+            this.mail = mail;
             if (subject != null)
                 subject.setText(mail.getSubject());
             if (sender != null && mail.getSender() != null)

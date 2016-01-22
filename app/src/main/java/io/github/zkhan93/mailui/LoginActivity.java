@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "response:" + response);
                 try {
-                    if (response.optBoolean("Authentication")) {
+                    if (response.optBoolean("authentication")) {
                         //login success
                         saveUserData();
                         startMainActivity();
@@ -60,9 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "error:" + error.getLocalizedMessage());
                 setError("Connection error, Try again!!");
-                //TODO:remove this line
-                saveUserData();
-                startMainActivity();
+
             }
         };
     }
@@ -102,7 +100,13 @@ public class LoginActivity extends AppCompatActivity {
         setError(null);
         String username = getUserName();
         String password = getPassword();
-        JSONObject params = Util.getCredentials(getApplicationContext());
+        JSONObject params = new JSONObject();
+        try {
+            params.put("username", username);
+            params.put("password", password);
+        } catch (JSONException ex) {
+            Util.log(TAG, ex.getLocalizedMessage());
+        }
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.URL.LOGIN, params, loginResponseListener, loginErrorlistErrorListener);
         getReqQueue().add(request);
 
